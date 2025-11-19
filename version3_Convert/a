@@ -1,0 +1,29 @@
+import subprocess
+import os
+
+def convertir_webm_a_mp3(archivo_webm, archivo_mp3):
+    if not os.path.exists(archivo_webm):
+        print(f"Error: El archivo '{archivo_webm}' no existe.")
+        return
+    
+    comando = [
+        'ffmpeg',
+        '-i', archivo_webm,  # Archivo de entrada
+        '-vn',  # Sin video (solo audio)
+        '-acodec', 'mp3',  # Codec de salida
+        '-ab', '192k',  # Bitrate (opcional, para calidad decente)
+        archivo_mp3  # Archivo de salida
+    ]
+    
+    try:
+        subprocess.run(comando, check=True)
+        print(f"Conversión completada: {archivo_webm} -> {archivo_mp3}")
+    except subprocess.CalledProcessError as e:
+        print(f"Error durante la conversión: {e}")
+
+# Preguntar al usuario por los nombres de archivos
+if __name__ == "__main__":
+    archivo_webm = input("Ingresa el nombre del archivo .webm (incluye la ruta si no está en la misma carpeta): ")
+    archivo_mp3 = input("Ingresa el nombre deseado para el archivo .mp3 de salida (incluye la ruta si quieres guardarlo en otro lugar): ")
+    
+    convertir_webm_a_mp3(archivo_webm, archivo_mp3)
